@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="H2" id="Project_1c6e6517" html="y" template="Default" database="H2" >
+	<schema name="PUBLIC" catalogname="DB" schemaname="PUBLIC" >
+		<table name="NOTES" >
+			<column name="NOTE_ID" type="uuid" length="19" jt="-2" mandatory="y" />
+			<column name="USERNAME" type="varchar" length="100" jt="12" />
+			<column name="TIME_OF_ENTRY" type="time" jt="92" />
+			<column name="TITLE" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="CONTENT" type="varchar" length="2000" jt="12" mandatory="y" />
+			<index name="PK_NOTES" unique="PRIMARY_KEY" >
+				<column name="NOTE_ID" />
+			</index>
+			<index name="IDX_NOTES" unique="NORMAL" >
+				<column name="USERNAME" />
+			</index>
+			<fk name="FK_NOTES" to_schema="PUBLIC" to_table="USERS" >
+				<fk_column name="USERNAME" pk="USERNAME" />
+			</fk>
+		</table>
+		<table name="USERS" >
+			<column name="USER_UID" type="uuid" length="32" jt="-2" mandatory="y" />
+			<column name="USERNAME" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="EMAIL" type="varchar" length="50" jt="12" mandatory="y" />
+			<column name="PASSWORD" type="varchar" length="16" jt="12" mandatory="y" />
+			<index name="PK_USERS" unique="PRIMARY_KEY" >
+				<column name="USER_UID" />
+			</index>
+			<index name="PK_USERS_0" unique="UNIQUE" >
+				<column name="EMAIL" />
+			</index>
+			<index name="PK_USERS_1" unique="UNIQUE" >
+				<column name="USERNAME" />
+			</index>
+		</table>
+	</schema>
+	<connector name="H2" database="H2" driver_class="org.h2.Driver" driver_jar="h2-1.4.189.jar" host="localhost" port="-1" instance="C:/Users/TOPE/Desktop/Coding/DB" schema_mapping="" />
+	<layout id="Layout_371cb81" name="Default" show_column_type="y" show_relation_columns="y" >
+		<entity schema="PUBLIC" name="USERS" color="b7c8e3" x="45" y="45" />
+		<entity schema="PUBLIC" name="NOTES" color="b7c8e3" x="420" y="45" />
+	</layout>
+</project>
