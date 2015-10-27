@@ -4,7 +4,6 @@
  *written by Temitope Fowotade
  */
 
-
  var saveNote = document.getElementById("save_note");
  var oldNoteArea = document.getElementById("old_note_area");
  
