@@ -3,32 +3,22 @@
  *iNote - A simple noteapp for capturing your thoughts on the go
  *written by Temitope Fowotade
  */
-
+ var titleNote = document.getElementById("title_area");
  var saveNote = document.getElementById("save_note");
  var oldNoteArea = document.getElementById("old_note_area");
- 
+ var liElement;
+ if (oldNoteArea.firstChild.nodeType === 1) {
+	liElement = oldNoteArea.firstChild;
+ } else if (oldNoteArea.firstChild.nodeType === 3) {
+	liElement = oldNoteArea.firstChild.nextSibling;
+ }
  
  
 	function createNote () {
-	  console.log("note created");
-	  function createNoteItem () {
-		  var noteItem = document.createElement("li");
-		  var label = document.createElement("label");
-		  var edit = document.createElement("button");
-		  var del = document.createElement("button");
-		  
-		  //create noteItem (list item) with label, button.edit, button.trash
-		  noteItem.appendChild(label);
-		  noteItem.appendChild(edit);
-		  noteItem.appendChild(del);
-		  return noteItem;
-		   
-	  }
-	  
-	  //append noteItem = oldNoteArea's first child
-	  oldNoteArea.appendChild(noteItem);
+		var title = titleNote.value;  
+		liElement.childNodes[0].nodeValue = title;
 	}
-    
+    saveNote.onclick = createNote;
 	  
 	  
 
