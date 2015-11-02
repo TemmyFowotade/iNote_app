@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>iNote</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/main.css" rel="stylesheet">
+	<link href="css/trash_notes.css" rel="stylesheet">
   </head>
   <body>
 	<nav class="navbar navbar-default">
@@ -29,8 +29,8 @@
 					<li><a href="#">Log out</a></li>
 				</ul>
 			</li>
-			<li id="logo" class="navbar-text"><h3>iNote</h3></li>
-			<li id="welcome_username" class="navbar-text"><h4>Welcome, userName</h4></li>
+			<li id="logo" class="navbar-text"><h3>Trash Can</h3></li>
+			
 
 			<li id="search">
 				<div class="input-group">
@@ -46,40 +46,30 @@
 	  </div>
 	</div>
 	</nav>
-
-
 	
-	<div class="container flex-container">
 	
-			<div class="container flex_item">
-				<div id="edit_note_area">
-					<div class="title_flex"><label>Title: <input type="text" id="title_area"></label></div>
-					<div class="content_flex"><label>Content: <textarea placeholder="Enter note here..." rows="7" cols="50" id="content_area"></textarea></label></div>
-					<input type="submit" id="save_note" value="Save" class="btn btn-info">
-				</div>
-			</div>
-			
-			
+	
 			<div class="container flex_item">
 					<div id="old_note_area">
 						<ul>
-					   <!-- <li class="well well-sm">Fifth Note <input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>              
-							<li class="well well-sm">Fourth Note <input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>
-							<li class="well well-sm">Third Note <input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>
-							<li class="well well-sm">Second Note <input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>
-							<li class="well well-sm">First Note <input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete"class="btn btn-link"></li> -->
+						    <li id = "1" class="well well-sm">Fifth Note <input type="submit" value="restore" class="btn btn-link">
+							</li>              
+							<li class="well well-sm">Fourth Note <input type="submit" value="restore" class="btn btn-link">
+							</li>
+							<li class="well well-sm">Third Note <input type="submit" value="restore" class="btn btn-link">
+							</li>
+							<li class="well well-sm">Second Note <input type="submit" value="restore" class="btn btn-link">
+							</li>
+							<li class="well well-sm">First Note <input type="submit" value="restore" class="btn btn-link">
+							</li> 
 						</ul>
 					</div>
 			</div>
 			
-	</div>
-	
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			
+			
+			
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
   </body>
