@@ -107,13 +107,8 @@ body {
     flex-wrap: wrap;
 }
 
-#edit_note_area {
-	margin: -20px 50px 1px 50px;
-	padding: 40px; 40px; 40px; 40px;
-	
-}
 
-#old_note_area {
+#trash_note_area {
 	margin-top: 25px; 
 }
 

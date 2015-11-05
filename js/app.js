@@ -2,8 +2,6 @@
  *iNote - A simple noteapp for capturing your thoughts on the go
  *written by Temitope Fowotade
  */
- 
- //(function () {
 	 
 	 
 	function clean(node) {
@@ -23,50 +21,52 @@
 	 var titleNote = document.getElementById("title_area");
 	 var saveNote = document.getElementById("save_note");
 	 var oldNoteArea = document.getElementById("old_note_area");
-	 var ulElement = oldNoteArea.firstChild; 
+	 var ulElement = oldNoteArea.childNodes[0]; 
 	 var editBtns = ulElement.getElementsByClassName("edit_note"); 
 	 var contentNote = document.getElementById("content_area");
-	 var title;
-	 var content;
+	
+	
 
- 
+	
  
 	function createNote () { 
-			title = titleNote.value;
-			content = contentNote.value;
-			
-			var newLi = document.createElement("li");
-			newLi.setAttribute("class", "well well-sm");
-			
-			var newTitle = document.createTextNode(title);
-			
-			var newContent = document.createElement("input");
-			newContent.setAttribute("type", "text");
-			var newContentValue = document.createTextNode(content);
-			newContent.appendChild(newContentValue);
-			newContent.style.display = "none";
-			
-			var editBtn = document.createElement("input");
-			editBtn.setAttribute("type", "submit");
-			editBtn.setAttribute("value", "Edit");
-			editBtn.setAttribute("class", "btn btn-link edit_note");
-			editBtn.onclick = editNote;
-			
-			var delBtn = document.createElement("input");
-			delBtn.setAttribute("type", "submit");
-			delBtn.setAttribute("value", "Trash");
-			delBtn.setAttribute("class", "btn btn-link del_note");
-			delBtn.onclick = deleteNote;
+		var title = titleNote.value;
+		var content = contentNote.value;
 		
-			newLi.appendChild(newTitle);
-			newLi.appendChild(newContent);
-			newLi.appendChild(editBtn);
-			newLi.appendChild(delBtn);
-			
-			ulElement.insertBefore(newLi, ulElement.firstChild);
+		var newLi = document.createElement("li");
+		newLi.setAttribute("class", "well well-sm");
+		
+		var newTitle = document.createTextNode(title);
+		
+		var newContent = document.createElement("input");
+		newContent.setAttribute("type", "text");
+		var newContentValue = document.createTextNode(content);
+		newContent.appendChild(newContentValue);
+		newContent.style.display = "none";
+		
+		var editBtn = document.createElement("input");
+		editBtn.setAttribute("type", "submit");
+		editBtn.setAttribute("value", "Edit");
+		editBtn.setAttribute("class", "btn btn-link edit_note");
+		editBtn.onclick = editNote;
+		
+		var delBtn = document.createElement("input");
+		delBtn.setAttribute("type", "submit");
+		delBtn.setAttribute("value", "Trash");
+		delBtn.setAttribute("class", "btn btn-link del_note");
+		delBtn.onclick = deleteNote;
+	
+		newLi.appendChild(newTitle);
+		newLi.appendChild(newContent);
+		newLi.appendChild(editBtn);
+		newLi.appendChild(delBtn);
+		
+		ulElement.insertBefore(newLi, ulElement.firstChild);
 	}
 	
-	//validation for create note, 
+	saveNote.onclick = createNote; 
+	
+	//validations for create note, 
 		//if title and content are empty, return false for onclick save_note
 		//once note is saved, clear contents of title and content areas.
 
@@ -85,34 +85,85 @@
 		ulElement.removeChild(liElement);
 	}
 	
-	//validation for edit note, after clicking edit, if user does not save note...undo edit action
+	//validation for edit note
+		//after clicking edit, if user does not save note...undo edit action
 
 	
 	function deleteNote () {
 		console.log("deleted!");
-	
-		//appendChild parent node- li of delete button to trash area
+		var liElement = this.parentNode;
+		ulElement.removeChild(liElement);
+		//ulTrashNote.insertBefore(liElement, firstChild);
 		
-		//var Li = this.parentNode;
-		//Li.appendChild("trash area");
+		
+		var title = titleNote.value;
+		var content = contentNote.value;
+		
+		var newLi = document.createElement("li");
+		newLi.setAttribute("class", "well well-sm");
+		
+		var newTitle = document.createTextNode(title);
+		
+		var newContent = document.createElement("input");
+		newContent.setAttribute("type", "text");
+		var newContentValue = document.createTextNode(content);
+		newContent.appendChild(newContentValue);
+		newContent.style.display = "none";
+		
+		var editBtn = document.createElement("input");
+		editBtn.setAttribute("type", "submit");
+		editBtn.setAttribute("value", "restore");
+		editBtn.setAttribute("class", "btn btn-link");
+		editBtn.onclick = restoreNote;
+	
+		newLi.appendChild(newTitle);
+		newLi.appendChild(newContent);
+		newLi.appendChild(editBtn);
+		newLi.appendChild(delBtn);
+		
+		ulTrashNote.insertBefore(newLi, ulTrashNote.firstChild);
+		
+		
 	}
 	
-	
-
-	function emptyTrash () {
-		//onclick emptyTrash
-	    //loop over all elements
-		//remove all children of ul using removeChild
-		
-	}
-     
-	  
-	  
+ 
 
     function restoreNote () {
 	   //onclick restore, this.parentNode 
 	   //i.e li item of each restore button,
-	   //appends to old_note_area ul using insertBefore
+		var li = this.parentNode;
+		var title = titleNote.value;
+		var content = contentNote.value;
+		
+		var newLi = document.createElement("li");
+		newLi.setAttribute("class", "well well-sm");
+		
+		var newTitle = document.createTextNode(title);
+		
+		var newContent = document.createElement("input");
+		newContent.setAttribute("type", "text");
+		var newContentValue = document.createTextNode(content);
+		newContent.appendChild(newContentValue);
+		newContent.style.display = "none";
+		
+		var editBtn = document.createElement("input");
+		editBtn.setAttribute("type", "submit");
+		editBtn.setAttribute("value", "Edit");
+		editBtn.setAttribute("class", "btn btn-link edit_note");
+		editBtn.onclick = editNote;
+		
+		var delBtn = document.createElement("input");
+		delBtn.setAttribute("type", "submit");
+		delBtn.setAttribute("value", "Trash");
+		delBtn.setAttribute("class", "btn btn-link del_note");
+		delBtn.onclick = deleteNote;
+	
+		newLi.appendChild(newTitle);
+		newLi.appendChild(newContent);
+		newLi.appendChild(editBtn);
+		newLi.appendChild(delBtn);
+		
+		ulElement.insertBefore(newLi, ulElement.firstChild);
     }
      
 
@@ -122,10 +173,7 @@
 
 
 
-	saveNote.onclick = createNote; 
+
 	
 	
-	//onclick empty trash, trash notes are deleted permanently.	
-	//onclick recover, trash note moves back to old notes.
- 
-//}())
+	
