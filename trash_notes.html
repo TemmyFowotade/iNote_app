@@ -31,16 +31,26 @@
 			</li>
 			<li id="logo" class="navbar-text"><h3>Trash Can</h3></li>
 			
-
+			<li id="search_nav">
+					<small>
+						<span id="counter" style="color: blue;"><!-- --></span>
+						<span id="navigate" style="display: none;">
+							<button id="cancel">&times;</button>
+							<button id="prev">&laquo;</button>
+							<button id="next">&raquo;</button>
+						</span>
+					</small>
+			</li>
 			<li id="search">
 				<div class="input-group">
 				  <span class="input-group-btn">
 					<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></button>
 				  </span>
 				  <div class="form-group">
-					<input type="text" class="form-control input-medium" placeholder="Search titles...">
+					<input type="text" class="form-control input-medium" placeholder="Search titles..." id="searchLi">
 				  </div>
 				</div>
+			
 			</li>
 		</ul>
 	  </div>
@@ -49,7 +59,7 @@
 	
 			<button id="empty_trash">Empty trash</button>
 	
-			<div class="container flex_item">
+			<div class="container flex_item" id="content">
 					<ul id="trash_note_area">
 						<li class="well well-sm">Fifth Note <input type="submit" value="restore" class="btn btn-link">
 						</li>              
@@ -69,6 +79,7 @@
 			
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/search.js"></script>
 	<script type="text/javascript" src="js/trash.js"></script>
   </body>
 </html>

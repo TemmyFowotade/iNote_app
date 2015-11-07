@@ -156,6 +156,13 @@ ul {
 	margin: 5px;
 }
 
+#search_nav {
+	position: absolute;
+	top: 17px;
+	left: 900px;
+	margin: 2px;
+}
+
 #title_area {
 	width: 450px;
 	position: relative;
