@@ -24,6 +24,7 @@
 	 var ulElement = oldNoteArea.childNodes[0]; 
 	 var editBtns = ulElement.getElementsByClassName("edit_note"); 
 	 var contentNote = document.getElementById("content_area");
+	 var ulTrashNote = document.getElementById("trash_note_area");
 	
 	
 
@@ -93,7 +94,7 @@
 		console.log("deleted!");
 		var liElement = this.parentNode;
 		ulElement.removeChild(liElement);
-		//ulTrashNote.insertBefore(liElement, firstChild);
+		ulTrashNote.insertBefore(liElement, firstChild);
 		
 		
 		var title = titleNote.value;
@@ -119,8 +120,7 @@
 		newLi.appendChild(newTitle);
 		newLi.appendChild(newContent);
 		newLi.appendChild(editBtn);
-		newLi.appendChild(delBtn);
-		
+
 		ulTrashNote.insertBefore(newLi, ulTrashNote.firstChild);
 		
 		
@@ -165,12 +165,7 @@
 		
 		ulElement.insertBefore(newLi, ulElement.firstChild);
     }
-     
-
-	function searchNotes () {
-	  
-	}
-
+ 
 
 
 
