@@ -64,7 +64,7 @@
 			  } else {
 				console.log("Authenticated successfully with payload:", authData);
 				auth  = authData;
-				location = "index.html";
+				location = "notepage.html";
 			  }
 			}
 		);
