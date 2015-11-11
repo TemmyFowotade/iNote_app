@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Attendance Log/profile</title>
+	
+    <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+   
+	<!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
+</head>
+
+<body>
+	<div class="delaccount">
+		<h3 id="deleteAccount">Delete Account Permanently</h3>
+		
+		<div><p id="errormsg"></p></div>
+		
+		<p><label for="delUserEmail">Enter email:</label><br>
+		<input type="email" id="delEmail" name="delEmail" value="" size="32"></p>
+		
+		<p><label for="delUserPwd">Password:</label><br>
+		<input type="password" id="delPwd" name="delPwd" value="" size="20">
+		</p>
+		
+		<p><input type="button" value="Delete" id="delAcct"></p>
+	 </div>
+</body>
+	
+	<script src="js/jquery-1.11.3.js" type="text/javascript"></script>
+	<script src="js/user.js"></script>
+</html>
