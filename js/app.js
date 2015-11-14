@@ -16,24 +16,22 @@
 			}
 		}
 	}
-	clean(document.body);
- 
-	 var titleNote = document.getElementById("title_area");
-	 var saveNote = document.getElementById("save_note");
-	 var oldNoteArea = document.getElementById("old_note_area");
-	 var ulElement = oldNoteArea.childNodes[0]; 
-	 var editBtns = ulElement.getElementsByClassName("edit_note"); 
-	 var contentNote = document.getElementById("content_area");
-	 var ulTrashNote = document.getElementById("trash_note_area");
 	
+	clean(document.body);
 	
 
+	var ref = new Firebase("https://inoteapp.firebaseio.com");
+	var notesRef = ref.child("notes");
 	
- 
-	function createNote () { 
-		var title = titleNote.value;
-		var content = contentNote.value;
-		
+	var titleNote = document.getElementById("title_area");
+	var saveNote = document.getElementById("save_note");
+	var oldNoteArea = document.getElementById("old_note_area");
+	var ulElement = oldNoteArea.childNodes[0]; 
+	var contentNote = document.getElementById("content_area");
+	var ulTrashNote = document.getElementById("trash_note_area");
+	
+	
+	function createLiElement (title, content) {
 		var newLi = document.createElement("li");
 		newLi.setAttribute("class", "well well-sm");
 		
@@ -62,32 +60,72 @@
 		newLi.appendChild(editBtn);
 		newLi.appendChild(delBtn);
 		
-		ulElement.insertBefore(newLi, ulElement.firstChild);
+		return newLi;
+	}
+	
+	/*function getTimeOfEntry () {
+		var currentTime = new Date();
+		var hours = currentTime.getHours();
+		var minutes = currentTime.getMinutes();
+		
+		if (minutes < 10){
+		    minutes = "0" + minutes;
+		}
+		var suffix = "AM";
+
+		if (hours >= 12) {
+			suffix = "PM";
+			hours = hours - 12;
+		}
+		if (hours == 0) {
+			hours = 12;
+		}
+
+		if (minutes < 10) {
+			minutes = "0" + minutes;
+		}
+		return (hours + ":" + minutes + " " + suffix);
+	}*/
+ 
+	function createNote () { 
+		var title = titleNote.value;
+		var content = contentNote.value;
+		var newLi = createLiElement(title, content);
+		if (title !== "" && content !== "") {
+			ulElement.insertBefore(newLi, ulElement.firstChild);
+			//save username, time of entry, title and content into usersRef
+				notesRef.push({
+					username: {
+					//time_of_entry: getTimeOfEntry(),
+					title: title,
+					content: content
+				}
+			});
+			
+		}
+		titleNote.value = "";
+		contentNote.value = "";
 	}
 	
 	saveNote.onclick = createNote; 
 	
-	//validations for create note, 
-		//if title and content are empty, return false for onclick save_note
-		//once note is saved, clear contents of title and content areas.
-
-	
-
 
 	function editNote () {
-		var titleEl = this.previousSibling.previousSibling.nodeValue;
-		titleNote.value = titleEl;
-		
+		var labelEl = this.previousSibling.previousSibling.nodeValue;
 		var contentEl = this.previousSibling;
 		var contentNode = contentEl.childNodes[0].nodeValue;
+		
+		titleNote.value = labelEl;
 		contentNote.value = contentNode;
 		
 		var liElement = this.parentNode;
 		ulElement.removeChild(liElement);
+		
+		//validation for edit note
+			//onclick edit, if user does not save new note...undo edit action
 	}
 	
-	//validation for edit note
-		//after clicking edit, if user does not save note...undo edit action
+	
 
 	
 	function deleteNote () {
@@ -95,77 +133,21 @@
 		var liElement = this.parentNode;
 		ulElement.removeChild(liElement);
 		ulTrashNote.insertBefore(liElement, firstChild);
-		
-		
-		var title = titleNote.value;
-		var content = contentNote.value;
-		
-		var newLi = document.createElement("li");
-		newLi.setAttribute("class", "well well-sm");
-		
-		var newTitle = document.createTextNode(title);
-		
-		var newContent = document.createElement("input");
-		newContent.setAttribute("type", "text");
-		var newContentValue = document.createTextNode(content);
-		newContent.appendChild(newContentValue);
-		newContent.style.display = "none";
-		
-		var editBtn = document.createElement("input");
-		editBtn.setAttribute("type", "submit");
-		editBtn.setAttribute("value", "restore");
-		editBtn.setAttribute("class", "btn btn-link");
-		editBtn.onclick = restoreNote;
-	
-		newLi.appendChild(newTitle);
-		newLi.appendChild(newContent);
-		newLi.appendChild(editBtn);
-
-		ulTrashNote.insertBefore(newLi, ulTrashNote.firstChild);
-		
-		
+		//remove edit and delete button of this.li
+		//add restore button of this.li	
+		//set onclick property of restore = restoreNote
 	}
 	
  
 
     function restoreNote () {
-	   //onclick restore, this.parentNode 
-	   //i.e li item of each restore button,
-		var li = this.parentNode;
-		var title = titleNote.value;
-		var content = contentNote.value;
-		
-		var newLi = document.createElement("li");
-		newLi.setAttribute("class", "well well-sm");
-		
-		var newTitle = document.createTextNode(title);
-		
-		var newContent = document.createElement("input");
-		newContent.setAttribute("type", "text");
-		var newContentValue = document.createTextNode(content);
-		newContent.appendChild(newContentValue);
-		newContent.style.display = "none";
-		
-		var editBtn = document.createElement("input");
-		editBtn.setAttribute("type", "submit");
-		editBtn.setAttribute("value", "Edit");
-		editBtn.setAttribute("class", "btn btn-link edit_note");
-		editBtn.onclick = editNote;
-		
-		var delBtn = document.createElement("input");
-		delBtn.setAttribute("type", "submit");
-		delBtn.setAttribute("value", "Trash");
-		delBtn.setAttribute("class", "btn btn-link del_note");
-		delBtn.onclick = deleteNote;
-	
-		newLi.appendChild(newTitle);
-		newLi.appendChild(newContent);
-		newLi.appendChild(editBtn);
-		newLi.appendChild(delBtn);
-		
-		ulElement.insertBefore(newLi, ulElement.firstChild);
+	    var liElement = this.parentNode;
+		ulElement.insertBefore(liElement, ulElement.firstChild);
+		//remove restore button of this.li
+		//add edit and delete button of this.li
+		//set onclick property of edit and trash to editNote and deleteNote resp
     }
- 
+    
 
 
 

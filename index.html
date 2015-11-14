@@ -1,123 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>iNote</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/user.css" rel="stylesheet">
-	<script src = "https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
-  </head>
-  <body>
-	<nav class="navbar navbar-inverse">
-	<div class="container-fluid">
-	 <div id="navigation" class="navbar-header">
-		<ul class="nav nav-pills">
-			<li id="logo" class="navbar-text"><h3>iNote</h3></li>
-			<li id="sign-up" class="navbar-text"><a href="#">Sign up</a></li>
-			<li id="help" class="navbar-text navbar-right"><a href="#">Help</a></li>
-		</ul>
-	  </div>
-	</div>
-	</nav>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>iNote</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/user.css" rel="stylesheet">
+        <script src = "https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+    </head>
+    <body>
+      	<nav class="navbar navbar-inverse">
+        	  <div class="container-fluid">
+          	    <div id="navigation" class="navbar-header">
+                		<ul class="nav nav-pills">
+                  			<li id="logo" class="navbar-text"><h3>iNote</h3></li>
+                  			<li id="sign-up" class="navbar-text"><a href="#">Help</a></li>
+                  			<li id="help" class="navbar-text navbar-right"><a href="#">Help</a></li>
+                		</ul>
+          	    </div>
+        	  </div>
+      	</nav>
 
 
     <div class="container">
         <div class="row">
-          <div class="col-md-5 col-md-offset-7">
-            <div class="panel panel-login">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6">
-                    <a href="#" class="active" id="login-form-link">Sign in</a>
-                  </div>
-                  <div class="col-xs-6">
-                    <a href="#" id="register-form-link">Sign up</a>
-                  </div>
-                </div>
-                <hr>
-              </div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div id="login-form" role="form" style="display: block;">
-					  <div><p class="errormessage"></p></div>
-					  
-                      <div class="form-group">
-                        <input type="email" name="email" id="login_email" tabindex="1" class="form-control" placeholder="Email" value="">
-                      </div>
-                      <div class="form-group">
-                        <input type="password" name="password" id="login_pwd" tabindex="2" class="form-control" placeholder="Password">
-                      </div>
-                      <div class="form-group">
-					    <div class="row">
-							<div class="col-sm-6">
-								<input type="checkbox" tabindex="5" class="" name="remember" id="remember">
-								<label for="remember">Remember Me</label>
-							</div>
-							<div class="col-sm-6">
-								<a href="forgotPassword.html" tabindex="5" class="forgot-password">Forgot Password?</a>
-							</div>
-						</div>
-                      </div>
-					  
-                      <div class="form-group">
+            <div class="col-md-5 col-md-offset-7">
+                <div class="panel panel-login">
+                    <div class="panel-heading">
                         <div class="row">
-                          <div class="col-sm-6 col-sm-offset-3">
-                            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
-                          </div>
+                            <div class="col-xs-6">
+                                <a href="#" class="active" id="login-form-link">Sign in</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a href="#" id="register-form-link">Sign up</a>
+                            </div>
                         </div>
+                        <hr>
+                    </div>
+                  
+
+                  <div class="panel-body">
+                      <div class="row">
+                          <div class="col-lg-12">
+                              <div id="login-form" role="form" style="display: block;">
+                 
+              					          <div>
+                                      <input type="text" id="errormsg" value="">
+                                  </div>
+              					  
+                                  <div class="form-group">
+                                      <input type="email" name="email" id="login_email" tabindex="1" class="form-control" placeholder="Email" value="" required>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <input type="password" name="password" id="login_pwd" tabindex="2" class="form-control" placeholder="Password" required>
+                                  </div>
+
+                                  <div class="form-group">
+                            					<div class="row">
+                              						<div class="col-sm-6">
+                              							<input type="checkbox" tabindex="5" class="" name="remember" id="remember">
+                              								<label for="remember">Remember Me</label>
+                              						</div>
+
+                              						<div class="col-sm-6">
+                              							<a href="forgot_password.html" tabindex="5" class="forgot-password">Forgot Password?</a>
+                              						</div>
+                            					</div>
+                                  </div>
+                     
+            					  
+                                  <div class="form-group">
+                                      <div class="row">
+                                          <div class="col-sm-6 col-sm-offset-3">
+                                              <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+          					
+            					        <div id="register-form" role="form" style="display: none;">
+                                  <div class="form-group">
+              							          <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" required>
+              						        </div>
+                                
+                                  <div class="form-group">
+              							          <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="" required>
+              						        </div>
+            						        
+                                  <div class="form-group">
+              							          <input type="password" name="pwd" id="pwd" tabindex="1" class="form-control" placeholder="Password" value="" required>
+              						        </div>
+            						        
+                                  <div class="form-group">
+              							          <input type="password" name="confirmPwd" id="confirmPwd" tabindex="2" class="form-control" placeholder="Confirm Password" required>
+              						        </div>
+              						        
+                                  <div class="form-group text-center">
+                							        <input type="checkbox" tabindex="3" class="" name="agree_terms id="remember">
+                                      <label for="remember">I agree to <span style="color: green">Terms of Service</span> and <span style="color: green">Privacy Policy</span></label>
+              						        </div>
+            						        
+                                <div class="form-group">
+            							        <div class="row">
+            							          <div class="col-sm-6 col-sm-offset-3">
+            								          <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+            							          </div>
+            							        </div>
+            						        </div>
+                              </div>
+                            </div>
+                          </div>
                       </div>
-                    </div>
-					
-					<div id="register-form" role="form" style="display: none;">
-						<div><p class="errormsg"></p></div>
-						
-                        <div class="form-group">
-							<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
-						</div>
-                        <div class="form-group">
-							<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
-						</div>
-						<div class="form-group">
-							<input type="password" name="pwd" id="pwd" tabindex="1" class="form-control" placeholder="Password" value="">
-						</div>
-						<div class="form-group">
-							<input type="password" name="confirmPwd" id="confirmPwd" tabindex="2" class="form-control" placeholder="Confirm Password">
-						</div>
-						<div class="form-group text-center">
-							<input type="checkbox" tabindex="3" class="" name="agree_terms id="remember">
-                        <label for="remember">I agree to <span style="color: green">Terms of Service</span> and <span style="color: green">Privacy Policy</span></label>
-						</div>
-						<div class="form-group">
-							<div class="row">
-							  <div class="col-sm-6 col-sm-offset-3">
-								<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
-							  </div>
-							</div>
-						</div>
-                    </div>
                   </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-     </div>
+    </div>
 
 
     <footer id="footer" class="midnight-blue">
-        <div class="container">
-			<div>
-				&copy; 2015 iNote. All Rights Reserved.
-			</div>
-        </div>
+      <div class="container">
+			  <div>
+				  &copy; 2015 iNote. All Rights Reserved.
+			  </div>
+      </div>
     </footer>
 
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src = "js/bootstrap.min.js"></script>
-	<script type = "text/javascript" src="js/user.js"></script>
+	  <script type = "text/javascript" src="js/user.js"></script>
 	
   </body>
 </html>
