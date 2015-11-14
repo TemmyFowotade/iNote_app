@@ -1,33 +1,206 @@
-$(function() {
 
-    $('#login-form-link').click(function(e) {
-		$("#login-form").delay(100).fadeIn(100);
- 		$("#register-form").fadeOut(100);
-		$('#register-form-link').removeClass('active');
-		$(this).addClass('active');
-		e.preventDefault();
-	});
-	$('#register-form-link').click(function(e) {
-		$("#register-form").delay(100).fadeIn(100);
- 		$("#login-form").fadeOut(100);
-		$('#login-form-link').removeClass('active');
-		$(this).addClass('active');
-		e.preventDefault();
-	});
+	//user authentication using firebase
+	var ref = new Firebase ("https://inoteapp.firebaseio.com");
+	
+	//create user	
+	var registerUser = document.querySelector("#register-submit");
+	var login = document.querySelector("#login-submit");
+	var forgotPwd = document.querySelector("#forgotPwd");
+	var changePwd = document.querySelector("#chngPwd");
+	var delAcct =  document.querySelector("#delAcct");
+	var logOut = document.querySelector("#logout");
+	
 
-});
+
+	if (registerUser !== null) {
+		register();
+	} 
+	
+	function register () {
+		registerUser.addEventListener ("click", function(){
+			var userName = document.querySelector("#username").value;
+			var email = document.querySelector("#email").value;
+			var password = document.querySelector("#pwd").value;
+			var confirmPwd = document.querySelector("#confirmPwd").value;
+			//var errorMsg = document.getElementById("errormsg");
+			
+			if (password === confirmPwd) {
+				if (userName !== "" && email !== "" && password !== "" && confirmPwd !== "") {
+					ref.createUser ({
+					    email    : email,
+					    password : password
+					}, 	function (error, userData) {
+						    if (error) {
+						        console.log("Error creating user:", error);
+						    } else {
+						    	console.log("Successfully created user account with uid:", userData.uid);
+	  
+								var usersReference = ref.child("users").child(userData.uid);
+								var usersRef = usersReference.push();
+								usersRef.set({
+									uid : userData.uid,
+									username :  userName,
+									email    :  email,
+									password :  password
+								});
+
+							}
+					});
+				}
+			}	
+		});
+	}
+
+
+
+    if (login !== null) {
+		auth();
+	} 
+
+	function auth () {
+		login.addEventListener ("click", function() {
+			var loginEmail = document.getElementById("login_email").value;
+			var loginPwd = document.getElementById("login_pwd").value;
+			//var errorMsg = document.getElementById("errormsg").value;
+			
+			
+			if(loginEmail !== "" && loginPwd  !== "") {
+				ref.authWithPassword ({
+					email    : loginEmail,
+					password : loginPwd
+				}, 	function(error, authData) {
+					  	if (error) {
+					    	console.log("Login Failed!", error);
+					  	} else {
+					    	console.log("Authenticated successfully with payload:", authData);
+					    	//errorMsg = "Authenticated successfully";
+					    	auth = authData;
+					    	location = "notepage.html";
+					  	}
+					}
+				);
+			}
+		})	
+    }
+
+
+
+    if (forgotPwd !== null) {
+		forgotPassword();
+	} 
+
+    function forgotPassword () {
+		forgotPwd.addEventListener("click", function(){
+			var email = document.getElementById("fpwd_email").value;
+			//var errorMsg = document.querySelector("#errormsg").firstChild.nodeValue;
+			
+			ref.resetPassword ({
+				email : email
+				}, 	function(error) {
+				  		if (error === null) {
+				    		console.log("Password reset email sent successfully");
+				  		} else {
+				    		console.log("Error sending password reset email:", error);
+				  		}
+					}
+			);
+		})			
+	}	
+		
+	
+
+	if (changePwd !== null) {
+		chngPassword();
+	} 
+
+	function chngPassword () {
+		changePwd.addEventListener("click", function(){
+			var email = document.getElementById("chngpwd_email").value;
+			var oldPwd = document.getElementById("old_password").value;
+			var newPwd = document.getElementById("chngpwd_password").value;
+			var cfrNewPwd = document.getElementById("chngpwd_cfmpassword").value;
+			
+			//var errorMsg = document.querySelector("#errormsg").firstChild.nodeValue;
+			
+			ref.changePassword({
+			    email       : email,
+			    oldPassword : oldPwd,
+			    newPassword : newPwd
+			}, 	function(error) {
+				    if (error === null) {
+				    	console.log("Password changed successfully");
+				    } else {
+				    	console.log("Error changing password:", error);
+				  	}
+			    }
+			);
+		})	
+	}	
+
  
- (function () {
-	 
- //user authentication using local storage
-    //create account
-    //log in
-    //forgot password
-    //change password
-    //delete account
-    //log out
 
-  /*onclick edit account, dropdown showing change password and 
-  delete account navigations.*/
+	if (delAcct !== null) {
+		deleteAcct();
+	} 
+
+	function deleteAcct () {
+		delAcct.addEventListener("click", function(){
+			var email = document.getElementById("delEmail").value;
+			var pwd = document.getElementById("delPwd").value;
+			var errorMsg = document.querySelector("#errormsg").firstChild.nodeValue;
+			
+			ref.removeUser({
+				email    : email,
+			    password : pwd
+				}, 	function(error) {
+				  		if (error === null) {
+				    		console.log("User removed successfully");
+				    		location = "index.html";
+				  		} else {
+				    		console.log("Error removing user:", error);
+				  		}
+					}
+			);
+		
+		})
+	}
+	
+
+
+	if (logOut !== null) {
+		logout();
+	} 
+
+	function logout () {
+		logOut.addEventListener("click", function(){
+			ref.unauth();
+			location = "index.html";
+		})
+  	}
   
-}())
+  
+  
+  
+  
+
+  
+  	//login interface animation
+	$(function() {
+		$('#login-form-link').click(function(e) {
+			$("#login-form").delay(100).fadeIn(100);
+			$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+		$('#register-form-link').click(function(e) {
+			$("#register-form").delay(100).fadeIn(100);
+			$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+
+	});
+ 
+  

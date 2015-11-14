@@ -125,7 +125,7 @@ ul {
 }
 
 .btn-link {
-	width: 70px; /* some fixed width */
+	width: 70px; 
 	margin: 5px;
 	position: relative;
 	left: 600px;
@@ -150,7 +150,7 @@ ul {
 #welcome_username{
 	position: absolute;
 	top: 14px;
-	right: 330px;
+	right: 440px;
 	margin: 5px;
 }
 
@@ -158,7 +158,13 @@ ul {
 	position: absolute;
 	top: 9px;
 	left: 1050px;
-	margin: 5px;
+	margin: 2px;
+}
+
+#search_nav {
+	position: absolute;
+	top: 21px;
+	left: 923px;
 }
 
 #title_area {
