@@ -32,6 +32,10 @@
 	var welcomeUser = document.getElementById("welcome_username");
 	
 	
+	if( auth !== null ) {
+		welcomeUsers ();
+	}
+
 	function welcomeUsers () {
 		var myUser = usersRef.child(auth.uid);
 		myUser.once("value", function(snapshot) {
@@ -39,8 +43,7 @@
 			welcomeUser.innerHTML = "Welcome, " + username;
 		});
 	}
-	welcomeUsers();
-
+	
 
 	function createLiElement (title, content) {
 		var newLi = document.createElement("li");
