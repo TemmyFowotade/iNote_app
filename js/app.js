@@ -4,7 +4,7 @@
  */
 	 
 	 
-	function clean(node) {
+	function clean (node) {
 		for(var n = 0; n < node.childNodes.length; n++) {
 			var child = node.childNodes[n];
 			if (child.nodeType === 8 || (child.nodeType === 3 && !/\S/.test(child.nodeValue))) {
@@ -21,22 +21,35 @@
 	
 
 	var ref = new Firebase("https://inoteapp.firebaseio.com");
-	var notesRef = ref.child("notes");
+	var usersRef = new Firebase("https://inoteapp.firebaseio.com/users");
+	var auth = ref.getAuth();
 	
-	var titleNote = document.getElementById("title_area");
+	
 	var saveNote = document.getElementById("save_note");
-	var oldNoteArea = document.getElementById("old_note_area");
-	var ulElement = oldNoteArea.childNodes[0]; 
+	var titleNote = document.getElementById("title_area");
 	var contentNote = document.getElementById("content_area");
-	var ulTrashNote = document.getElementById("trash_note_area");
+	var ulElement = document.getElementById("old_note_area"); 
+	var welcomeUser = document.getElementById("welcome_username");
 	
 	
+	function welcomeUsers () {
+		var myUser = usersRef.child(auth.uid);
+		myUser.once("value", function(snapshot) {
+			var username = snapshot.val().username;
+			welcomeUser.innerHTML = "Welcome, " + username;
+		});
+	}
+	welcomeUsers();
+
+
 	function createLiElement (title, content) {
 		var newLi = document.createElement("li");
 		newLi.setAttribute("class", "well well-sm");
 		
+		//title = //read data from firebase
 		var newTitle = document.createTextNode(title);
 		
+		//content = //read data from firebase
 		var newContent = document.createElement("input");
 		newContent.setAttribute("type", "text");
 		var newContentValue = document.createTextNode(content);
@@ -63,48 +76,44 @@
 		return newLi;
 	}
 	
-	/*function getTimeOfEntry () {
-		var currentTime = new Date();
-		var hours = currentTime.getHours();
-		var minutes = currentTime.getMinutes();
-		
-		if (minutes < 10){
-		    minutes = "0" + minutes;
-		}
-		var suffix = "AM";
-
-		if (hours >= 12) {
-			suffix = "PM";
-			hours = hours - 12;
-		}
-		if (hours == 0) {
-			hours = 12;
-		}
-
-		if (minutes < 10) {
-			minutes = "0" + minutes;
-		}
-		return (hours + ":" + minutes + " " + suffix);
-	}*/
- 
-	function createNote () { 
-		var title = titleNote.value;
-		var content = contentNote.value;
-		var newLi = createLiElement(title, content);
-		if (title !== "" && content !== "") {
+	
+ 	
+ 	//load previously saved notes and any newly added ones by attaching title and content from firebase to createLiElement
+ 	if( auth !== null ) {
+ 		var myUser = usersRef.child(auth.uid);
+		myUser.child("notes").on("child_added", function(snapshot) {
+			var newNote = snapshot.val();
+			var title = newNote.title;
+			var content = newNote.content;
+			var newLi = createLiElement(title, content);
 			ulElement.insertBefore(newLi, ulElement.firstChild);
-			//save username, time of entry, title and content into usersRef
-				notesRef.push({
-					username: {
-					//time_of_entry: getTimeOfEntry(),
-					title: title,
-					content: content
-				}
-			});
-			
-		}
-		titleNote.value = "";
-		contentNote.value = "";
+		});
+	} else {
+		alert("Please Create an account or Sign in to save notes!");
+		location = "index.html";
+	}
+
+
+	
+
+	function createNote () { 
+		if (titleNote.value !== "" && contentNote.value !== "") {
+			var title = titleNote.value;
+			var content = contentNote.value;
+
+			var myUser = usersRef.child(auth.uid);
+			myUser.child("notes").push ({
+				title: title,
+				content: content
+				//time_of_entry: Firebase.ServerValue.TIMESTAMP
+			},  function(){
+                	console.log("Note saved successfully: ", auth.uid);
+              	}
+            );
+
+			titleNote.value = "";
+			contentNote.value = "";
+		}	
 	}
 	
 	saveNote.onclick = createNote; 

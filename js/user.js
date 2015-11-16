@@ -1,7 +1,7 @@
 
 	//user authentication using firebase
 	var ref = new Firebase ("https://inoteapp.firebaseio.com");
-	
+
 	//create user	
 	var registerUser = document.querySelector("#register-submit");
 	var login = document.querySelector("#login-submit");
@@ -24,8 +24,9 @@
 			var confirmPwd = document.querySelector("#confirmPwd").value;
 			//var errorMsg = document.getElementById("errormsg");
 			
-			if (password === confirmPwd) {
-				if (userName !== "" && email !== "" && password !== "" && confirmPwd !== "") {
+			
+			if (userName !== "" && email !== "" && password !== "" && confirmPwd !== "") {
+				if (password === confirmPwd) {
 					ref.createUser ({
 					    email    : email,
 					    password : password
@@ -34,30 +35,30 @@
 						        console.log("Error creating user:", error);
 						    } else {
 						    	console.log("Successfully created user account with uid:", userData.uid);
-	  
-								var usersReference = ref.child("users").child(userData.uid);
-								var usersRef = usersReference.push();
-								usersRef.set({
-									uid : userData.uid,
-									username :  userName,
-									email    :  email,
-									password :  password
-								});
-
+									
+									ref.child('users').child(userData.uid).set({
+										username :  userName,
+										email    :  email,
+										password :  password
+									},  function(){
+					                    	console.log("User Information Saved:", userData.uid);
+					                  	}
+					                );
 							}
-					});
+						}
+					);
 				}
 			}	
 		});
 	}
-
+	//add authwithpassword to createuser for automatic logging in
 
 
     if (login !== null) {
-		auth();
+		authUser();
 	} 
 
-	function auth () {
+	function authUser () {
 		login.addEventListener ("click", function() {
 			var loginEmail = document.getElementById("login_email").value;
 			var loginPwd = document.getElementById("login_pwd").value;
