@@ -45,14 +45,13 @@
 	}
 	
 
-	function createLiElement (title, content) {
+	function createLiElement (title, content, notekey) {
 		var newLi = document.createElement("li");
 		newLi.setAttribute("class", "well well-sm");
+		newLi.id = notekey;
 		
-		//title = //read data from firebase
 		var newTitle = document.createTextNode(title);
 		
-		//content = //read data from firebase
 		var newContent = document.createElement("input");
 		newContent.setAttribute("type", "text");
 		var newContentValue = document.createTextNode(content);
@@ -88,7 +87,8 @@
 			var newNote = snapshot.val();
 			var title = newNote.title;
 			var content = newNote.content;
-			var newLi = createLiElement(title, content);
+			var notekey = newNote.noteid;
+			var newLi = createLiElement(title, content, notekey);
 			ulElement.insertBefore(newLi, ulElement.firstChild);
 		});
 	} else {
@@ -96,24 +96,27 @@
 		location = "index.html";
 	}
 
-
 	
-
+	
 	function createNote () { 
 		if (titleNote.value !== "" && contentNote.value !== "") {
 			var title = titleNote.value;
 			var content = contentNote.value;
 
 			var myUser = usersRef.child(auth.uid);
-			myUser.child("notes").push ({
+			var notesRef = myUser.child("notes");
+			var notes = notesRef.push ({
 				title: title,
 				content: content
 				//time_of_entry: Firebase.ServerValue.TIMESTAMP
 			},  function(){
                 	console.log("Note saved successfully: ", auth.uid);
+                	notes.update({
+                		noteid: notes.key()
+                	});
               	}
             );
-
+			
 			titleNote.value = "";
 			contentNote.value = "";
 		}	
@@ -123,42 +126,79 @@
 	
 
 	function editNote () {
-		var labelEl = this.previousSibling.previousSibling.nodeValue;
-		var contentEl = this.previousSibling;
-		var contentNode = contentEl.childNodes[0].nodeValue;
-		
-		titleNote.value = labelEl;
-		contentNote.value = contentNode;
-		
 		var liElement = this.parentNode;
-		ulElement.removeChild(liElement);
+		var liId = liElement.getAttribute("id");
+		var title = liElement.childNodes[0].nodeValue;
+		var contentEl = liElement.childNodes[1];
+		var content = contentEl.childNodes[0].nodeValue;
 		
-		//validation for edit note
-			//onclick edit, if user does not save new note...undo edit action
+		titleNote.value = title;
+		contentNote.value = content;
+		
+		var myUser = usersRef.child(auth.uid);
+		var notePath = myUser.child("notes").child(liId);
+		notePath.remove();
+		ulElement.removeChild(liElement);
+
+		console.log(notePath);
+		
+		/*var connectedRef = new Firebase("https://inoteapp.firebaseio.com/.info/connected");
+		var myUser = usersRef.child(auth.uid);
+		var notepath = myUser.child("notes").child(liId);
+		var notepathRef = notepath.toString();
+			connectedRef.on('value', function(snapshot) {
+			  if (snapshot.val()) {
+			    notepathRef.onDisconnect().remove();
+			    notepathRef.update({
+			    	liId: {
+				    	title: title,
+						content: content,
+						noteid: liId
+					}
+			    })
+			  }
+			}); */
 	}
 	
-	
+
+
+
+
 
 	
 	function deleteNote () {
-		console.log("deleted!");
 		var liElement = this.parentNode;
+		var liId = liElement.getAttribute("id");
+		var title = liElement.childNodes[0].nodeValue;
+		var contentEl = liElement.childNodes[1];
+		var content = contentEl.childNodes[0].nodeValue;
+		
+	 
+
+		var myUser = usersRef.child(auth.uid);
+		var trashNotesRef = myUser.child("trash_notes");
+		var trash = trashNotesRef.push ({
+			title: title,
+			content: content
+			//time_of_entry: Firebase.ServerValue.TIMESTAMP
+		},  function(){
+            	console.log("Note saved successfully: ", auth.uid);
+            	trash.update({
+            		noteid: trash.key()
+            	});
+          	}
+        );
+
+
+		var notePath = myUser.child("notes").child(liId);
+		notePath.remove();
 		ulElement.removeChild(liElement);
-		ulTrashNote.insertBefore(liElement, firstChild);
-		//remove edit and delete button of this.li
-		//add restore button of this.li	
-		//set onclick property of restore = restoreNote
+		
 	}
 	
  
 
-    function restoreNote () {
-	    var liElement = this.parentNode;
-		ulElement.insertBefore(liElement, ulElement.firstChild);
-		//remove restore button of this.li
-		//add edit and delete button of this.li
-		//set onclick property of edit and trash to editNote and deleteNote resp
-    }
+    
     
 
 
