@@ -1,6 +1,6 @@
 /* 
  *iNote - A simple noteapp for capturing your thoughts on the go
- *written by Temitope Fowotade
+ *By Temitope Fowotade
  */
 	 
 	 
@@ -20,17 +20,18 @@
 	clean(document.body);
 	
 
+
 	var ref = new Firebase("https://inoteapp.firebaseio.com");
 	var usersRef = new Firebase("https://inoteapp.firebaseio.com/users");
 	var auth = ref.getAuth();
 	
-	
-	var saveNote = document.getElementById("save_note");
+	var saveBtn = document.getElementById("save_note");
 	var titleNote = document.getElementById("title_area");
 	var contentNote = document.getElementById("content_area");
 	var ulElement = document.getElementById("old_note_area"); 
 	var welcomeUser = document.getElementById("welcome_username");
 	
+
 	
 	if( auth !== null ) {
 		welcomeUsers ();
@@ -45,33 +46,51 @@
 	}
 	
 
+
+	function showContent () {
+		var content = this.childNodes[1];
+	    content.style.display = 'block';
+	}
+
+	function hideContent () {
+		var content = this.childNodes[1];
+		content.style.display = 'none';
+	}
+
+
+
 	function createLiElement (title, content, notekey) {
 		var newLi = document.createElement("li");
 		newLi.setAttribute("class", "well well-sm");
 		newLi.id = notekey;
+		newLi.onmouseover = showContent; 
+		newLi.onmouseout = hideContent;
 		
-		var newTitle = document.createTextNode(title);
+		var titleEl = document.createElement("span");
+		var titleNode = document.createTextNode(title);
+		titleEl.appendChild(titleNode);
 		
-		var newContent = document.createElement("input");
-		newContent.setAttribute("type", "text");
-		var newContentValue = document.createTextNode(content);
-		newContent.appendChild(newContentValue);
-		newContent.style.display = "none";
+		var contentEl = document.createElement("span");
+		var contentNode = document.createTextNode(content);
+		contentEl.appendChild(contentNode);
+		contentEl.style.display = "none";
 		
-		var editBtn = document.createElement("input");
-		editBtn.setAttribute("type", "submit");
-		editBtn.setAttribute("value", "Edit");
-		editBtn.setAttribute("class", "btn btn-link edit_note");
+		
+		var editBtn = document.createElement("A");
+		var linkText = document.createTextNode("Edit");
+		editBtn.appendChild(linkText);
+		editBtn.href = "edit_note.html";
+		editBtn.setAttribute("class", "btn btn-link");
 		editBtn.onclick = editNote;
-		
+
 		var delBtn = document.createElement("input");
 		delBtn.setAttribute("type", "submit");
 		delBtn.setAttribute("value", "Trash");
 		delBtn.setAttribute("class", "btn btn-link del_note");
 		delBtn.onclick = deleteNote;
 	
-		newLi.appendChild(newTitle);
-		newLi.appendChild(newContent);
+		newLi.appendChild(titleEl);
+		newLi.appendChild(contentEl);
 		newLi.appendChild(editBtn);
 		newLi.appendChild(delBtn);
 		
@@ -80,7 +99,6 @@
 	
 	
  	
- 	//load previously saved notes and any newly added ones by attaching title and content from firebase to createLiElement
  	if( auth !== null ) {
  		var myUser = usersRef.child(auth.uid);
 		myUser.child("notes").on("child_added", function(snapshot) {
@@ -109,7 +127,7 @@
 				title: title,
 				content: content
 				//time_of_entry: Firebase.ServerValue.TIMESTAMP
-			},  function(){
+			},  function() {
                 	console.log("Note saved successfully: ", auth.uid);
                 	notes.update({
                 		noteid: notes.key()
@@ -122,46 +140,21 @@
 		}	
 	}
 	
-	saveNote.onclick = createNote; 
-	
+	saveBtn.onclick = createNote; 
+
+
+
 
 	function editNote () {
 		var liElement = this.parentNode;
+		var noteTitle = liElement.childNodes[0].firstChild.nodeValue;
+		var noteContent = liElement.childNodes[1].firstChild.nodeValue;
 		var liId = liElement.getAttribute("id");
-		var title = liElement.childNodes[0].nodeValue;
-		var contentEl = liElement.childNodes[1];
-		var content = contentEl.childNodes[0].nodeValue;
-		
-		titleNote.value = title;
-		contentNote.value = content;
-		
-		var myUser = usersRef.child(auth.uid);
-		var notePath = myUser.child("notes").child(liId);
-		notePath.remove();
-		ulElement.removeChild(liElement);
 
-		console.log(notePath);
-		
-		/*var connectedRef = new Firebase("https://inoteapp.firebaseio.com/.info/connected");
-		var myUser = usersRef.child(auth.uid);
-		var notepath = myUser.child("notes").child(liId);
-		var notepathRef = notepath.toString();
-			connectedRef.on('value', function(snapshot) {
-			  if (snapshot.val()) {
-			    notepathRef.onDisconnect().remove();
-			    notepathRef.update({
-			    	liId: {
-				    	title: title,
-						content: content,
-						noteid: liId
-					}
-			    })
-			  }
-			}); */
+		localStorage.setItem("title", noteTitle);
+		localStorage.setItem("content", noteContent);
+		localStorage.setItem("notekey", JSON.stringify(liId));
 	}
-	
-
-
 
 
 
@@ -169,9 +162,8 @@
 	function deleteNote () {
 		var liElement = this.parentNode;
 		var liId = liElement.getAttribute("id");
-		var title = liElement.childNodes[0].nodeValue;
-		var contentEl = liElement.childNodes[1];
-		var content = contentEl.childNodes[0].nodeValue;
+		var title = liElement.childNodes[0].firstChild.nodeValue;
+		var content = liElement.childNodes[1].firstChild.nodeValue;
 		
 	 
 
@@ -182,7 +174,7 @@
 			content: content
 			//time_of_entry: Firebase.ServerValue.TIMESTAMP
 		},  function(){
-            	console.log("Note saved successfully: ", auth.uid);
+            	console.log("Note trashed successfully: ", auth.uid);
             	trash.update({
             		noteid: trash.key()
             	});
@@ -192,8 +184,7 @@
 
 		var notePath = myUser.child("notes").child(liId);
 		notePath.remove();
-		ulElement.removeChild(liElement);
-		
+		ulElement.removeChild(liElement);	
 	}
 	
  

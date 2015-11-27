@@ -22,8 +22,6 @@
 			var email = document.querySelector("#email").value;
 			var password = document.querySelector("#pwd").value;
 			var confirmPwd = document.querySelector("#confirmPwd").value;
-			//var errorMsg = document.getElementById("errormsg");
-			
 			
 			if (userName !== "" && email !== "" && password !== "" && confirmPwd !== "") {
 				if (password === confirmPwd) {
@@ -35,15 +33,28 @@
 						        console.log("Error creating user:", error);
 						    } else {
 						    	console.log("Successfully created user account with uid:", userData.uid);
+						    	ref.authWithPassword ({
+									email    : email,
+									password : password
+								}, 	function(error, authData) {
+									  	if (error) {
+									    	console.log("Login Failed!", error);
+									  	} else {
+									    	console.log("Authenticated successfully with payload:", authData);
+									    	auth = authData;
+									    	location = "notepage.html";
 									
-									ref.child('users').child(userData.uid).set({
-										username :  userName,
-										email    :  email,
-										password :  password
-									},  function(){
-					                    	console.log("User Information Saved:", userData.uid);
-					                  	}
-					                );
+											ref.child('users').child(userData.uid).set({
+												username :  userName,
+												email    :  email,
+												password :  password
+											},  function(){
+							                    	console.log("User Information Saved:", userData.uid);
+							                  	}
+							                );
+										}
+									}
+							    );
 							}
 						}
 					);
@@ -51,7 +62,6 @@
 			}	
 		});
 	}
-	//add authwithpassword to createuser for automatic logging in
 
 
     if (login !== null) {
@@ -62,7 +72,6 @@
 		login.addEventListener ("click", function() {
 			var loginEmail = document.getElementById("login_email").value;
 			var loginPwd = document.getElementById("login_pwd").value;
-			//var errorMsg = document.getElementById("errormsg").value;
 			
 			
 			if(loginEmail !== "" && loginPwd  !== "") {
@@ -74,7 +83,6 @@
 					    	console.log("Login Failed!", error);
 					  	} else {
 					    	console.log("Authenticated successfully with payload:", authData);
-					    	//errorMsg = "Authenticated successfully";
 					    	auth = authData;
 					    	location = "notepage.html";
 					  	}
@@ -93,7 +101,6 @@
     function forgotPassword () {
 		forgotPwd.addEventListener("click", function(){
 			var email = document.getElementById("fpwd_email").value;
-			//var errorMsg = document.querySelector("#errormsg").firstChild.nodeValue;
 			
 			ref.resetPassword ({
 				email : email
@@ -120,8 +127,6 @@
 			var oldPwd = document.getElementById("old_password").value;
 			var newPwd = document.getElementById("chngpwd_password").value;
 			var cfrNewPwd = document.getElementById("chngpwd_cfmpassword").value;
-			
-			//var errorMsg = document.querySelector("#errormsg").firstChild.nodeValue;
 			
 			ref.changePassword({
 			    email       : email,
@@ -179,13 +184,10 @@
 		})
   	}
   
-  
-  
-  
-  
+ 
 
   
-  	//login interface animation
+  	// login/register tab animation
 	$(function() {
 		$('#login-form-link').click(function(e) {
 			$("#login-form").delay(100).fadeIn(100);
