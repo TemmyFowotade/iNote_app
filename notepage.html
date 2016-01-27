@@ -1,100 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>iNote</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/main.css" rel="stylesheet">
-	<script src = "https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
-  </head>
-  <body>
-	<nav class="navbar navbar-default">
-	<div class="container-fluid">
-	 <div id="navigation" class="navbar-header">
-		<ul class="nav nav-pills">
-			<li role="presentation" id="menu" class="navbar-brand dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-				<h3><span class="glyphicon glyphicon-menu-hamburger"></span></h3></a>
-				<ul class="dropdown-menu">
-					<li class="active"><a href="#">Notes</a></li>
-					<li><a href="trash_notes.html">Trash Can</a></li>
-					<li class="dropdown-submenu">
-						<a href="#" tabindex="-1">Edit Account</a>
-						<ul class="dropdown-menu">
-							<li><a href="change_password.html">change password</a></li>
-							<li><a href="delete_account.html">delete account</a></li>
-						</ul>
-					</li>
-					<li><a href="#" id="logout">Log out</a></li>
-				</ul>
-			</li>
-			<li id="logo" class="navbar-text"><h3>iNote</h3></li>
-			<li id="welcome_username" class="navbar-text"><h4>Welcome, userName</h4></li>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>iNote</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/main.css" rel="stylesheet">
+		<script src = "https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+	</head>
 
-			<li id="search_nav">
-					<small>
-						<span id="counter" style="color: blue;"><!-- --></span>
-						<span id="navigate" style="display: none;">
-							<button id="cancel">&times;</button>
-							<button id="prev">&laquo;</button>
-							<button id="next">&raquo;</button>
-						</span>
-					</small>
-			</li>
-			<li id="search">
-				<div class="input-group">
-				  <span class="input-group-btn">
-					<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></button>
-				  </span>
-				  <div class="form-group">
-					<input type="text" class="form-control input-medium" placeholder="Search titles..." id="searchLi">
-				  </div>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div id="navigation" class="navbar-header">
+					<ul class="nav nav-pills">
+						<li role="presentation" id="menu" class="navbar-brand dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+							<h3><span class="glyphicon glyphicon-menu-hamburger"></span></h3></a>
+							<ul class="dropdown-menu">
+								<li class="active"><a href="#">Notes</a></li>
+								<li><a href="trash_notes.html">Trash Can</a></li>
+								<li class="dropdown-submenu">
+									<a href="#" tabindex="-1">Edit Account</a>
+									<ul class="dropdown-menu">
+										<li><a href="change_password.html">change password</a></li>
+										<li><a href="delete_account.html">delete account</a></li>
+									</ul>
+								</li>
+								<li><a href="#" id="logout">Log out</a></li>
+							</ul>
+						</li>
+						<li id="logo" class="navbar-text"><h3>iNote</h3></li>
+						<li id="welcome_username" class="navbar-text"><h4></h4></li>
+
+						<li id="search_nav">
+							<small>
+								<span id="counter" style="color: blue;"><!-- --></span>
+								<span id="navigate" style="display: none;">
+									<button id="cancel">&times;</button>
+									<button id="prev">&laquo;</button>
+									<button id="next">&raquo;</button>
+								</span>
+							</small>
+						</li>
+						<li id="search">
+							<div class="input-group">
+							  <span class="input-group-btn">
+									<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></button>
+							  </span>
+							  <div class="form-group">
+									<input type="text" class="form-control input-medium" placeholder="Search titles..." id="searchLi">
+							  </div>
+							</div>
+						</li>
+					</ul>
 				</div>
-
-			</li>
-		</ul>
-	  </div>
-	</div>
-	</nav>
+			</div>
+		</nav>
 
 
-	
-	<div class="container flex-container">
-	
+		
+		<div class="container flex-container">
 			<div class="container flex_item">
 				<div id="edit_note_area">
 					<div class="title_flex"><label>Title: <input type="text" id="title_area" required></label></div>
 					<div class="content_flex"><label>Content: <textarea placeholder="Enter note here..." rows="7" cols="50" id="content_area" required></textarea></label></div>
-					<input type="submit" id="save_note" value="Save" class="btn btn-info">
+					<input type="submit" id="save_note" value="Create note" class="btn btn-info">
 				</div>
 			</div>
 			
-			
-			<div class="container flex_item" id="content">
-					<div id="old_note_area">
-						<ul>
-					   <!-- <li class="well well-sm">Fifth Note<input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>              
-							<li class="well well-sm">Fourth Note<input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>
-							<li class="well well-sm">Third Note<input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>
-							<li class="well well-sm">Second Note<input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete" class="btn btn-link"></li>
-							<li class="well well-sm">First Note<input type="submit" value="Edit" class="btn btn-link">
-										   <input type="submit" value="Delete"class="btn btn-link"></li> -->
-						</ul>
-					</div>
+			<div class="container flex_item">
+				<div id="content">
+					<ul id="old_note_area">
+				    <!--<li class="well well-sm">Fifth Note<input type="submit" value="Edit" class="btn btn-link"></li>-->
+					</ul>
+				</div>
 			</div>
-			
-	</div>
-	
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/search.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
-	<script type = "text/javascript" src="js/user.js"></script>
-  </body>
+		</div>
+		
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/search.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>
+		<script type ="text/javascript" src="js/user.js"></script>
+	</body>
 </html>
