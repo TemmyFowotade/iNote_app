@@ -2,7 +2,15 @@
  *iNote - A simple noteapp for capturing your thoughts on the go
  *By Temitope Fowotade
  */
-	 
+	var ref = new Firebase("https://inoteapp.firebaseio.com");
+	var usersRef = ref.child('users');
+
+	var auth = ref.getAuth();
+	var saveBtn = document.getElementById("save_note");
+	var titleNote = document.getElementById("title_area");
+	var contentNote = document.getElementById("content_area");
+	var ulElement = document.getElementById("old_note_area"); 
+	var welcomeUser = document.getElementById("welcome_username");
 	 
 	function clean (node) {
 		for(var n = 0; n < node.childNodes.length; n++) {
@@ -19,19 +27,6 @@
 	
 	clean(document.body);
 	
-
-
-	var ref = new Firebase("https://inoteapp.firebaseio.com");
-	var usersRef = new Firebase("https://inoteapp.firebaseio.com/users");
-	var auth = ref.getAuth();
-	
-	var saveBtn = document.getElementById("save_note");
-	var titleNote = document.getElementById("title_area");
-	var contentNote = document.getElementById("content_area");
-	var ulElement = document.getElementById("old_note_area"); 
-	var welcomeUser = document.getElementById("welcome_username");
-	
-
 	
 	if( auth !== null ) {
 		welcomeUsers ();
@@ -126,14 +121,13 @@
 			var notes = notesRef.push ({
 				title: title,
 				content: content
-				//time_of_entry: Firebase.ServerValue.TIMESTAMP
 			},  function() {
-                	console.log("Note saved successfully: ", auth.uid);
-                	notes.update({
-                		noteid: notes.key()
-                	});
-              	}
-            );
+	        	console.log("Note saved successfully: ", auth.uid);
+	        	notes.update({
+	        		noteid: notes.key()
+	        	});
+	      	}
+      );
 			
 			titleNote.value = "";
 			contentNote.value = "";
@@ -172,14 +166,13 @@
 		var trash = trashNotesRef.push ({
 			title: title,
 			content: content
-			//time_of_entry: Firebase.ServerValue.TIMESTAMP
 		},  function(){
-            	console.log("Note trashed successfully: ", auth.uid);
-            	trash.update({
-            		noteid: trash.key()
-            	});
-          	}
-        );
+        	console.log("Note trashed successfully: ", auth.uid);
+        	trash.update({
+        		noteid: trash.key()
+        	});
+      	}
+    );
 
 
 		var notePath = myUser.child("notes").child(liId);
