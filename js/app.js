@@ -44,7 +44,7 @@
 
 	function showContent () {
 		var content = this.childNodes[1];
-	    content.style.display = 'block';
+	  content.style.display = 'block';
 	}
 
 	function hideContent () {
