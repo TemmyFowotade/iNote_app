@@ -22,7 +22,7 @@
 			else if (child.nodeType === 1) {
 			  clean(child);
 			}
-		}
+	}
 	}
 	
 	clean(document.body);
