@@ -69,7 +69,7 @@ function updateNote() {
           	}
           );
 
-          titleNote.value = "";
+    titleNote.value = "";
 		contentNote.value = "";
 
 		localStorage.removeItem("title");
