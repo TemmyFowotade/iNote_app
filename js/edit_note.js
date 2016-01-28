@@ -64,12 +64,12 @@ function updateNote() {
 				title: title,
 				content: content,
 				noteid: liId
-		},  function() {
-          	console.log("Note updated successfully: ", auth.uid);
-          	}
-          );
+				}, function() {
+         console.log("Note updated successfully: ", auth.uid);
+        }
+    );
 
-          titleNote.value = "";
+    titleNote.value = "";
 		contentNote.value = "";
 
 		localStorage.removeItem("title");
